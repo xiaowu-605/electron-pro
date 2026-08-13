@@ -6,5 +6,6 @@
   "tabWidth": 2,
   "arrowParens": "always",
   "endOfLine": "lf",
-  "singleAttributePerLine": true
+  "singleAttributePerLine": true,
+  "plugins": ["prettier-plugin-tailwindcss"]
 }
