@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "name": "OpenAI",
+    "title": "OpenAI",
+    "desc": "OpenAI is an AI research and deployment company. Our mission is to ensure that artificial general intelligence benefits all of humanity.",
+    "avatar": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/OpenAI_Logo.svg/2560px-OpenAI_Logo.svg.png",
+    "createdAt": "2015-12-11 00:00:00",
+    "updatedAt": "2026-08-01 00:00:00",
+    "models": ["gpt-4o", "gpt-4o-mini", "gpt-4.1", "o3"]
+  },
+  {
+    "id": 2,
+    "name": "Anthropic",
+    "title": "Anthropic",
+    "desc": "Anthropic is an AI safety company based in San Francisco, focused on building reliable, interpretable, and steerable AI systems.",
+    "avatar": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Anthropic_logo.svg/2560px-Anthropic_logo.svg.png",
+    "createdAt": "2021-01-01 00:00:00",
+    "updatedAt": "2026-08-01 00:00:00",
+    "models": ["claude-opus-4-7", "claude-sonnet-4-6", "claude-haiku-4-5"]
+  },
+  {
+    "id": 3,
+    "name": "Google DeepMind",
+    "title": "Google DeepMind",
+    "desc": "Google DeepMind is an AI research lab building next-generation AI systems, including the Gemini family of multimodal models.",
+    "avatar": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Google_DeepMind_logo.svg/2560px-Google_DeepMind_logo.svg.png",
+    "createdAt": "2010-09-01 00:00:00",
+    "updatedAt": "2026-08-01 00:00:00",
+    "models": ["gemini-2.5-pro", "gemini-2.5-flash", "gemini-3-pro"]
+  }
+]

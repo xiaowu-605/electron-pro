@@ -26,17 +26,7 @@
       </div>
     </div>
     <div class="flex h-full flex-1 items-center">
-      <div class="mx-auto h-full w-[80%]">
-        <div class="flex h-[85%] items-center">
-          <ProviderSelect
-            :items="providerItems"
-            v-model="selectedModel"
-          />
-        </div>
-        <div class="flex h-[15%] items-center">
-          <MessageInput v-model="inputValue" />
-        </div>
-      </div>
+      <router-view />
     </div>
   </div>
 </template>
@@ -48,11 +38,7 @@ import ConversationList from '@/components/ConversationList.vue'
 import ChatLineIcon from '@iconify-vue/reicon/chat-line'
 import SettingOutlinedIcon from '@iconify-vue/weui/setting-outlined'
 import { ProviderProps } from '@/types/index'
-import ProviderSelect from '@/components/ProviderSelect.vue'
-import MessageInput from '@/components/MessageInput.vue'
-
-let selectedModel = ref<string>('')
-let inputValue = ref<string>('')
+import providers from '@/data/providers.json'
 
 let items = ref<ConversationProps[]>([
   {
@@ -110,31 +96,6 @@ let items = ref<ConversationProps[]>([
     title: 'Conversation 2',
     createAt: '2023-06-01 12:00:00',
     providerId: 1,
-  },
-])
-
-let providerItems = ref<ProviderProps[]>([
-  {
-    id: 1,
-    name: 'OpenAI',
-    models: ['gpt-3.5-turbo', 'gpt-4'],
-    title: 'OpenAI',
-    desc: 'OpenAI is an AI research and deployment company. Our mission is to ensure that artificial general intelligence benefits all of humanity.',
-    avatar:
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/OpenAI_Logo.svg/2560px-OpenAI_Logo.svg.png',
-    createdAt: '2023-06-01 12:00:00',
-    updatedAt: '2023-06-01 12:00:00',
-  },
-  {
-    id: 2,
-    name: 'Anthropic',
-    models: ['claude-v1', 'claude-v2'],
-    title: 'Anthropic',
-    desc: 'Anthropic is a AI research company focused on developing safe and beneficial artificial intelligence.',
-    avatar:
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/OpenAI_Logo.svg/2560px-OpenAI_Logo.svg.png',
-    createdAt: '2023-06-01 12:00:00',
-    updatedAt: '2023-06-01 12:00:00',
   },
 ])
 </script>
