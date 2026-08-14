@@ -26,8 +26,16 @@
       </div>
     </div>
     <div class="flex h-full flex-1 items-center">
-      <div class="mx-auto w-[80%]">
-        <ProviderSelect :items="providerItems" />
+      <div class="mx-auto h-full w-[80%]">
+        <div class="flex h-[85%] items-center">
+          <ProviderSelect
+            :items="providerItems"
+            v-model="selectedModel"
+          />
+        </div>
+        <div class="flex h-[15%] items-center">
+          <MessageInput v-model="inputValue" />
+        </div>
       </div>
     </div>
   </div>
@@ -41,6 +49,10 @@ import ChatLineIcon from '@iconify-vue/reicon/chat-line'
 import SettingOutlinedIcon from '@iconify-vue/weui/setting-outlined'
 import { ProviderProps } from '@/types/index'
 import ProviderSelect from '@/components/ProviderSelect.vue'
+import MessageInput from '@/components/MessageInput.vue'
+
+let selectedModel = ref<string>('')
+let inputValue = ref<string>('')
 
 let items = ref<ConversationProps[]>([
   {

@@ -1,6 +1,6 @@
 <template>
-  <div class="provider-select">
-    <SelectRoot>
+  <div class="provider-select w-full">
+    <SelectRoot v-model="currentModel">
       <SelectTrigger
         class="flex w-full cursor-pointer items-center justify-between rounded-md border px-3 py-1.5 shadow-sm outline-none data-[placeholder]:text-gray-400"
       >
@@ -22,7 +22,7 @@
                 <SelectItem
                   v-for="(model, index) in provider.models"
                   :key="index"
-                  :value="model"
+                  :value="`${provider.id}-${model}`"
                   class="relative flex h-7 cursor-pointer items-center rounded px-6 text-green-700 outline-none data-[highlighted]:bg-green-700 data-[highlighted]:text-white"
                 >
                   <SelectItemIndicator class="absolute top-2 left-2 w-6">
@@ -60,6 +60,7 @@ import SelectIcon from '@iconify-vue/ep/select'
 
 import { ProviderProps } from '@/types/index'
 defineProps<{ items: ProviderProps[] }>()
+const currentModel = defineModel<string>()
 </script>
 
 <style scoped></style>
