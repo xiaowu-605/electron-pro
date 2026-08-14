@@ -17,7 +17,7 @@ import { ref } from 'vue'
 import { ProviderProps } from '@/types/index'
 import ProviderSelect from '@/components/ProviderSelect.vue'
 import MessageInput from '@/components/MessageInput.vue'
-import providers from '@/data/providers.json'
+import { providers } from '@/data/index'
 
 let selectedModel = ref<string>('')
 let inputValue = ref<string>('')

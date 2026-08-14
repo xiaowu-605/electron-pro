@@ -53,6 +53,7 @@
     "vite": "^5.0.12"
   },
   "dependencies": {
+    "@iconify-vue/svg-spinners": "^1.0.3",
     "electron-squirrel-startup": "^1.0.1",
     "lodash": "^4.18.1",
     "radix-vue": "^1.9.17",

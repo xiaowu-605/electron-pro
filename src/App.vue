@@ -6,6 +6,7 @@
       </div>
       <div class="grid h-[5%] grid-cols-2 gap-2">
         <button
+          @click="toPage('/')"
           class="inline-flex h-[32px] h-[100%] cursor-pointer items-center justify-center rounded-[4px] border border-green-700 bg-green-700 px-[15px] py-[8px] text-sm text-white shadow-sm hover:bg-green-700/90"
         >
           <ChatLineIcon
@@ -15,6 +16,7 @@
           新建聊天
         </button>
         <button
+          @click="toPage('/Setting')"
           class="hover inline-flex h-[32px] h-[100%] cursor-pointer items-center justify-center rounded-[4px] border border-green-700 bg-green-50 px-[15px] py-[8px] text-sm text-green-700 shadow-sm hover:bg-white/90 hover:text-green-700/80"
         >
           <SettingOutlinedIcon
@@ -25,7 +27,14 @@
         </button>
       </div>
     </div>
-    <div class="flex h-full flex-1 items-center">
+    <div class="h-full flex-1">
+      <Button
+        color="purple"
+        size="large"
+        plain
+        loading
+        >hello wwww</Button
+      >
       <router-view />
     </div>
   </div>
@@ -35,69 +44,19 @@
 import { ref } from 'vue'
 import { ConversationProps } from '@/types/index'
 import ConversationList from '@/components/ConversationList.vue'
+import Button from '@/components/Button.vue'
 import ChatLineIcon from '@iconify-vue/reicon/chat-line'
 import SettingOutlinedIcon from '@iconify-vue/weui/setting-outlined'
-import { ProviderProps } from '@/types/index'
-import providers from '@/data/providers.json'
+import { conversationsList } from '@/data/index'
+import { useRouter } from 'vue-router'
 
-let items = ref<ConversationProps[]>([
-  {
-    id: 1,
-    selectModel: 'gpt-3.5-turbo',
-    updateAt: '2023-06-01 12:00:00',
-    title: '为什么么么么么么么么么么么么么么么么么么么么么么么么么么么么么么么',
-    createAt: '2023-06-01 12:00:00',
-    providerId: 1,
-  },
-  {
-    id: 2,
-    selectModel: 'gpt-4',
-    updateAt: '2023-06-02 14:30:00',
-    title: 'Conversation 2',
-    createAt: '2023-06-01 12:00:00',
-    providerId: 1,
-  },
-  {
-    id: 3,
-    selectModel: 'gpt-4',
-    updateAt: '2023-06-02 14:30:00',
-    title: 'Conversation 2',
-    createAt: '2023-06-01 12:00:00',
-    providerId: 1,
-  },
-  {
-    id: 4,
-    selectModel: 'gpt-4',
-    updateAt: '2023-06-02 14:30:00',
-    title: 'Conversation 2',
-    createAt: '2023-06-01 12:00:00',
-    providerId: 1,
-  },
-  {
-    id: 5,
-    selectModel: 'gpt-4',
-    updateAt: '2023-06-02 14:30:00',
-    title: 'Conversation 2',
-    createAt: '2023-06-01 12:00:00',
-    providerId: 1,
-  },
-  {
-    id: 6,
-    selectModel: 'gpt-4',
-    updateAt: '2023-06-02 14:30:00',
-    title: 'Conversation 2',
-    createAt: '2023-06-01 12:00:00',
-    providerId: 1,
-  },
-  {
-    id: 7,
-    selectModel: 'gpt-4',
-    updateAt: '2023-06-02 14:30:00',
-    title: 'Conversation 2',
-    createAt: '2023-06-01 12:00:00',
-    providerId: 1,
-  },
-])
+const router = useRouter()
+
+let items = ref<ConversationProps[]>(conversationsList)
+
+function toPage(path: string) {
+  router.push({ path })
+}
 </script>
 
 <style scoped></style>

@@ -5,7 +5,7 @@
       v-for="item in items"
       :key="item.id"
     >
-      <a href="#">
+      <div @click="toPage(item.id)">
         <div
           class="flex items-center justify-between text-sm leading-8 text-gray-500"
         >
@@ -15,14 +15,25 @@
         <h2 class="truncate leading-8 font-semibold">
           {{ item.title }}
         </h2>
-      </a>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ConversationProps } from '@/types/index'
+import { useRouter } from 'vue-router'
+const router = useRouter()
 defineProps<{ items: ConversationProps[] }>()
+
+const toPage = (id: number) => {
+  router.push({
+    path: '/Conversation',
+    query: {
+      id: id.toString(),
+    },
+  })
+}
 </script>
 
 <style scoped></style>
