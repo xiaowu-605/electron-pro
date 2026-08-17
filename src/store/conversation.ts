@@ -4,6 +4,7 @@ import { ref, computed } from 'vue'
 import { db } from '@/db'
 export const useConversation = defineStore('conversation', () => {
   let items = ref<ConversationProps[]>([])
+  let selectedId = ref<number>(-1)
 
   const fetchConversations = async () => {
     const conversations = await db.conversations.toArray()
@@ -26,6 +27,7 @@ export const useConversation = defineStore('conversation', () => {
   }
   return {
     items,
+    selectedId,
     fetchConversations,
     createConversation,
     getConversationById,
