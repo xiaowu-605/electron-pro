@@ -30,7 +30,14 @@
               <ThreeDotsBounceIcon height="1em" />
             </template>
             <template v-else>
-              {{ message.content }}
+              <div
+                class="prose prose-pre:p-0 prose-slate prose-headings:my-2 prose-li:my-0 prose-ul:my-1 prose-p:my-1"
+              >
+                <VueMarkdown
+                  :source="message.content"
+                  :plugins="plugins"
+                />
+              </div>
             </template>
           </div>
         </div>
@@ -43,7 +50,10 @@
 import { MessageProps } from '@/types'
 import ThreeDotsBounceIcon from '@iconify-vue/svg-spinners/3-dots-bounce'
 import dayjs from 'dayjs'
+import VueMarkdown from 'vue-markdown-render'
+import markdownItHighlightjs from 'markdown-it-highlightjs'
 
+const plugins = [markdownItHighlightjs]
 defineProps<{
   messages: MessageProps[]
 }>()
