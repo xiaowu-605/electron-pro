@@ -9,6 +9,7 @@
       />
     </div>
     <div
+      @click="create"
       class="flex h-[60px] w-[120px] cursor-pointer items-center justify-center rounded-[4px] border border-green-700 bg-green-700 text-white"
     >
       发送
@@ -19,6 +20,15 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 const inputValue = defineModel<string>()
+const emit = defineEmits<{
+  (e: 'create', question: string): void
+}>()
+const create = () => {
+  if (inputValue.value?.trim()) {
+    emit('create', inputValue.value.trim())
+    inputValue.value = ''
+  }
+}
 </script>
 
 <style scoped></style>

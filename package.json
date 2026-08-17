@@ -54,8 +54,13 @@
   },
   "dependencies": {
     "@iconify-vue/svg-spinners": "^1.0.3",
+    "dayjs": "^1.11.21",
+    "dexie": "^4.4.4",
+    "dotenv": "^17.4.2",
     "electron-squirrel-startup": "^1.0.1",
     "lodash": "^4.18.1",
+    "openai": "^7.4.0",
+    "pinia": "^4.0.3",
     "radix-vue": "^1.9.17",
     "vue": "^3.5.41",
     "vue-router": "^5.2.0"

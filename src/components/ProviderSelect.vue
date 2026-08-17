@@ -22,7 +22,7 @@
                 <SelectItem
                   v-for="(model, index) in provider.models"
                   :key="index"
-                  :value="`${provider.id}-${model}`"
+                  :value="`${provider.id}/${model}`"
                   class="relative flex h-7 cursor-pointer items-center rounded px-6 text-green-700 outline-none data-[highlighted]:bg-green-700 data-[highlighted]:text-white"
                 >
                   <SelectItemIndicator class="absolute top-2 left-2 w-6">

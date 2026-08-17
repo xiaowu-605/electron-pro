@@ -2,8 +2,8 @@ export interface ConversationProps {
   id: number
   title: string
   selectModel: string
-  createAt: string
-  updateAt: string
+  createdAt: string
+  updatedAt: string
   providerId: number
 }
 
@@ -28,3 +28,20 @@ export interface MessageProps {
   createdAt: string
   updatedAt: string
 }
+
+export interface CreateChatProps {
+  messags: { role: string; content: string }[]
+  providerName: string
+  selectedModel: string
+  messageId: number
+}
+
+export interface UpdatgedStreamData {
+  messageId: number
+  data: {
+    is_end: boolean
+    result: string
+  }
+}
+
+export type OnUpdateCallback = (data: UpdatgedStreamData) => void

@@ -1,13 +1,18 @@
-import { app, BrowserWindow } from 'electron'
+import { app, BrowserWindow, ipcMain } from 'electron'
 import path from 'node:path'
+import fs from 'fs/promises'
 import started from 'electron-squirrel-startup'
+import OpenAI from 'openai'
+import dotenv from 'dotenv'
+import { UpdatgedStreamData } from './types'
+dotenv.config()
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (started) {
   app.quit()
 }
 
-const createWindow = () => {
+const createWindow = async () => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
     width: 1600,
@@ -15,6 +20,38 @@ const createWindow = () => {
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
     },
+  })
+  ipcMain.on('start-chat', async (event, props) => {
+    const { messages, providerName, selectedModel, messageId } = props
+    let baseURL =
+      providerName === 'qianfan'
+        ? 'https://qianfan.baidubce.com/v2'
+        : 'https://api.deepseek.com/v1'
+
+    let apiKey =
+      providerName === 'qianfan'
+        ? process.env.OPENAI_API_KEY
+        : process.env.DEEPSEEK_API_KEY
+    const openai = new OpenAI({
+      baseURL,
+      apiKey,
+    })
+    const stream = await openai.chat.completions.create({
+      model: selectedModel,
+      messages,
+      stream: true,
+    })
+    for await (const chunk of stream) {
+      const content = {
+        messageId,
+        data: {
+          is_end: chunk.choices[0]?.finish_reason,
+          result: chunk.choices[0]?.delta?.content ?? '',
+        },
+      }
+      // 返回给渲染进程
+      mainWindow.webContents.send('update-message', content)
+    }
   })
 
   // and load the index.html of the app.
@@ -51,6 +88,3 @@ app.on('activate', () => {
     createWindow()
   }
 })
-
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and import them here.

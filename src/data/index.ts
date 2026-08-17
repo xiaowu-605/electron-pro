@@ -2,36 +2,26 @@ import { ConversationProps, ProviderProps, MessageProps } from '@/types/index'
 export const providers: ProviderProps[] = [
   {
     id: 1,
-    name: 'OpenAI',
-    title: 'OpenAI',
-    desc: 'OpenAI is an AI research and deployment company. Our mission is to ensure that artificial general intelligence benefits all of humanity.',
+    name: 'deepseek',
+    title: 'DeepSeek',
+    desc: '深度求索出品的大模型，性价比高',
+    models: ['deepseek-chat', 'deepseek-reasoner'],
     avatar:
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/OpenAI_Logo.svg/2560px-OpenAI_Logo.svg.png',
-    createdAt: '2015-12-11 00:00:00',
-    updatedAt: '2026-08-01 00:00:00',
-    models: ['gpt-4o', 'gpt-4o-mini', 'gpt-4.1', 'o3'],
+      'https://qph.cf2.poecdn.net/main-thumb-pb-3004-50-jougqzjtwfqfyqprxbdwofvnwattmtrg.jpg',
+    createdAt: '2026-07-03',
+    updatedAt: '2026-07-03',
   },
   {
     id: 2,
-    name: 'Anthropic',
-    title: 'Anthropic',
-    desc: 'Anthropic is an AI safety company based in San Francisco, focused on building reliable, interpretable, and steerable AI systems.',
+    name: 'dashscope',
+    title: '阿里灵积',
+    desc: '通义千问',
+    // https://help.aliyun.com/zh/dashscope/developer-reference/api-details?spm=a2c4g.11186623.0.
+    models: ['qwen-turbo', 'qwen-plus', 'qwen-max'],
     avatar:
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Anthropic_logo.svg/2560px-Anthropic_logo.svg.png',
-    createdAt: '2021-01-01 00:00:00',
-    updatedAt: '2026-08-01 00:00:00',
-    models: ['claude-opus-4-7', 'claude-sonnet-4-6', 'claude-haiku-4-5'],
-  },
-  {
-    id: 3,
-    name: 'Google DeepMind',
-    title: 'Google DeepMind',
-    desc: 'Google DeepMind is an AI research lab building next-generation AI systems, including the Gemini family of multimodal models.',
-    avatar:
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Google_DeepMind_logo.svg/2560px-Google_DeepMind_logo.svg.png',
-    createdAt: '2010-09-01 00:00:00',
-    updatedAt: '2026-08-01 00:00:00',
-    models: ['gemini-2.5-pro', 'gemini-2.5-flash', 'gemini-3-pro'],
+      'https://qph.cf2.poecdn.net/main-thumb-pb-3004-50-jougqzjtwfqfyqprxbdwofvnwattmtrg.jpg',
+    createdAt: '2026-07-03',
+    updatedAt: '2026-07-03',
   },
 ]
 
@@ -96,17 +86,17 @@ export const conversationsList: ConversationProps[] = [
   {
     id: 1,
     selectModel: 'gpt-3.5-turbo',
-    updateAt: '2023-06-01 12:00:00',
+    updatedAt: '2023-06-01 12:00:00',
     title: '什么是光合作用',
-    createAt: '2023-06-01 12:00:00',
+    createdAt: '2023-06-01 12:00:00',
     providerId: 1,
   },
   {
     id: 2,
     selectModel: 'gpt-4',
-    updateAt: '2023-06-02 14:30:00',
+    updatedAt: '2023-06-02 14:30:00',
     title: 'Conversation 2',
-    createAt: '2023-06-01 12:00:00',
+    createdAt: '2023-06-01 12:00:00',
     providerId: 1,
   },
 ]

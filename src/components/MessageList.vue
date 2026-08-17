@@ -14,7 +14,7 @@
             class="mb-2 text-sm text-gray-500"
             :class="{ 'text-right': message.type === 'question' }"
           >
-            {{ message.createdAt }}
+            {{ dayjs(message.createdAt).format('YYYY-MM-DD HH:mm:ss') }}
           </div>
           <div
             class="message-question rounded-md bg-green-700 p-2 text-white"
@@ -42,6 +42,7 @@
 <script setup lang="ts">
 import { MessageProps } from '@/types'
 import ThreeDotsBounceIcon from '@iconify-vue/svg-spinners/3-dots-bounce'
+import dayjs from 'dayjs'
 
 defineProps<{
   messages: MessageProps[]

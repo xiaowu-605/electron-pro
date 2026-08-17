@@ -2,7 +2,7 @@
   <div class="flex h-screen items-center justify-between">
     <div class="h-full w-[300px] border-r border-gray-300 bg-gray-300">
       <div class="h-[95%] overflow-y-auto">
-        <ConversationList :items="items" />
+        <ConversationList :items="conversations" />
       </div>
       <div class="grid h-[5%] grid-cols-2 gap-2">
         <button
@@ -28,20 +28,13 @@
       </div>
     </div>
     <div class="h-full flex-1">
-      <Button
-        color="purple"
-        size="large"
-        plain
-        loading
-        >hello wwww</Button
-      >
       <router-view />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { ConversationProps } from '@/types/index'
 import ConversationList from '@/components/ConversationList.vue'
 import Button from '@/components/Button.vue'
@@ -49,10 +42,18 @@ import ChatLineIcon from '@iconify-vue/reicon/chat-line'
 import SettingOutlinedIcon from '@iconify-vue/weui/setting-outlined'
 import { conversationsList } from '@/data/index'
 import { useRouter } from 'vue-router'
+import { initProviders, db } from '@/db'
+import { useConversation } from '@/store/conversation'
 
+const conversationStore = useConversation()
 const router = useRouter()
 
-let items = ref<ConversationProps[]>(conversationsList)
+let conversations = computed(() => conversationStore.items)
+onMounted(async () => {
+  await initProviders()
+  console.log('initProviders')
+  conversationStore.fetchConversations()
+})
 
 function toPage(path: string) {
   router.push({ path })
