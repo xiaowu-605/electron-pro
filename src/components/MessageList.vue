@@ -1,5 +1,8 @@
 <template>
-  <div class="message-list">
+  <div
+    class="message-list"
+    ref="_messageListRef"
+  >
     <div
       class="message-item mb-3"
       v-for="message in messages"
@@ -47,6 +50,7 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue'
 import { MessageProps } from '@/types'
 import ThreeDotsBounceIcon from '@iconify-vue/svg-spinners/3-dots-bounce'
 import dayjs from 'dayjs'
@@ -54,9 +58,14 @@ import VueMarkdown from 'vue-markdown-render'
 import markdownItHighlightjs from 'markdown-it-highlightjs'
 
 const plugins = [markdownItHighlightjs]
+const _messageListRef = ref<HTMLDivElement>()
 defineProps<{
   messages: MessageProps[]
 }>()
+
+defineExpose({
+  _messageListRef,
+})
 </script>
 
 <style scoped></style>

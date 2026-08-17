@@ -7,7 +7,10 @@
     <span class="text-sm text-gray-500">{{ conversation.updatedAt }}</span>
   </div>
   <div class="mx-auto h-[80%] w-[80%] overflow-y-auto pt-2">
-    <MessageList :messages="filteredMessages" />
+    <MessageList
+      :messages="filteredMessages"
+      ref="messageListRef"
+    />
   </div>
   <div class="mx-auto flex h-[15%] w-[80%] items-center">
     <MessageInput
@@ -18,7 +21,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch, onMounted, computed } from 'vue'
+import { ref, watch, onMounted, computed, nextTick } from 'vue'
 import MessageInput from '@/components/MessageInput.vue'
 import MessageList from '@/components/MessageList.vue'
 import {
@@ -70,7 +73,7 @@ const creatingInitialMessage = async () => {
     status: 'loading',
   }
   const newMessageId = await messageStore.createMessage(createdData)
-
+  await scrollToEnd()
   if (conversation.value) {
     const provider = await db.providers
       .where({
@@ -100,22 +103,25 @@ const initData = async () => {
 
 watch(
   () => route.query.id,
-  (id) => {
+  async (id) => {
     conversationId.value = Number(id)
     if (conversationId.value === null) {
       return []
     }
+    await scrollToEnd()
     initData()
   },
   { immediate: true },
 )
 onMounted(async () => {
   await initData()
+  await scrollToEnd()
   if (initMessageId) {
     await creatingInitialMessage()
   }
   window.electronAPI.onUpdateMessage(async (steamData: UpdatgedStreamData) => {
     messageStore.updateMessage(steamData)
+    await scrollToEnd()
   })
 })
 
@@ -130,6 +136,16 @@ async function messageInputChange(question: string) {
       type: 'question',
     })
     creatingInitialMessage()
+  }
+}
+const messageListRef = ref()
+async function scrollToEnd() {
+  await nextTick()
+  if (messageListRef.value) {
+    messageListRef.value._messageListRef.scrollIntoView({
+      block: 'end',
+      behavior: 'instant',
+    })
   }
 }
 </script>
