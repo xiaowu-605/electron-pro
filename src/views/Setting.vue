@@ -117,7 +117,7 @@
 </template>
 
 <script setup lang="ts">
-import { reactive } from 'vue'
+import { onMounted, reactive, watch } from 'vue'
 import {
   SelectContent,
   SelectItem,
@@ -148,10 +148,24 @@ const fontSizeOptions: { value: AppFontSize; label: string }[] = [
   { value: 'large', label: '大' },
 ]
 
-// TODO: 后续接入主进程文件系统持久化（getSettings 初始化 / watch 变更后 saveSettings）
 const settings = reactive<{ language: AppLanguage; fontSize: AppFontSize }>({
   language: 'zh-CN',
   fontSize: 'medium',
+})
+
+let initialized = false
+
+onMounted(async () => {
+  const saved = await window.electronAPI.getSettings()
+  Object.assign(settings, saved)
+  initialized = true
+})
+
+// 实时保存：任何字段变更即写入文件，无需保存按钮
+watch(settings, (value) => {
+  if (initialized) {
+    window.electronAPI.saveSettings({ ...value })
+  }
 })
 </script>
 

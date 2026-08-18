@@ -11,7 +11,7 @@ export interface IElectronAPI {
   onChatError: (callback: OnChatErrorCallback) => any
   offChatListeners: () => void
   getSettings: () => Promise<AppSettings>
-  saveSettings: (settings: AppSettings) => void
+  saveSettings: (settings: AppSettings) => Promise<AppSettings>
   onSettingsChanged: (callback: OnSettingsChangedCallback) => any
 }
 declare global {
