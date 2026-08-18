@@ -30,19 +30,18 @@ export const useMessageStore = defineStore('message', () => {
 
   const updateMessage = async (streamData: UpdatgedStreamData) => {
     const { messageId, data } = streamData
-    const currentMessage = items.value.find((item) => item.id === messageId)
-    if (currentMessage) {
-      const updatedData = {
-        status: data.isEnd ? 'finished' : ('streaming' as MessageStatus),
-        updatedAt: new Date().toISOString(),
-        ...(!data.isEnd && { content: currentMessage.content + data.content }),
-      }
-      await db.messages.update(messageId, updatedData)
-      const index = items.value.findIndex((item) => item.id === messageId)
-      if (index !== -1) {
-        items.value[index] = { ...items.value[index], ...updatedData }
-      }
+    const index = items.value.findIndex((item) => item.id === messageId)
+    if (index === -1) return
+    const currentMessage = items.value[index]
+    const updated = {
+      ...currentMessage,
+      status: data.isEnd ? 'finished' : ('streaming' as MessageStatus),
+      updatedAt: new Date().toISOString(),
+      ...(!data.isEnd && { content: currentMessage.content + data.content }),
     }
+    // 先同步更新内存再异步落库，避免并发 chunk 回调交错时基于旧值累加
+    items.value[index] = updated
+    await db.messages.update(messageId, updated)
   }
 
   const failMessage = async (errorData: ChatErrorData) => {

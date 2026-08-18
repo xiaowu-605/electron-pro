@@ -5,7 +5,7 @@ export const providers: ProviderProps[] = [
     name: 'deepseek',
     title: 'DeepSeek',
     desc: '深度求索出品的大模型，性价比高',
-    models: ['deepseek-chat', 'deepseek-reasoner'],
+    models: ['deepseek-v4-flash', 'deepseek-reasoner'],
     avatar:
       'https://qph.cf2.poecdn.net/main-thumb-pb-3004-50-jougqzjtwfqfyqprxbdwofvnwattmtrg.jpg',
     createdAt: '2026-07-03',

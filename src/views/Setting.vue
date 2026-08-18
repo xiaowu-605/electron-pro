@@ -1,8 +1,8 @@
 <template>
   <div class="mx-auto h-full w-[80%] overflow-y-auto pt-8 pb-6">
     <div class="mb-8">
-      <h2 class="text-xl font-bold text-gray-900">设置</h2>
-      <p class="mt-1 text-sm text-gray-500">管理应用的外观与显示偏好</p>
+      <h2 class="text-xl font-bold text-gray-900">{{ t('setting.title') }}</h2>
+      <p class="mt-1 text-sm text-gray-500">{{ t('setting.subtitle') }}</p>
     </div>
 
     <div
@@ -13,8 +13,12 @@
       >
         <PaletteIcon height="1.2em" class="text-green-700" />
         <div>
-          <h3 class="text-sm font-semibold text-gray-900">外观</h3>
-          <p class="mt-0.5 text-xs text-gray-500">自定义应用的显示偏好</p>
+          <h3 class="text-sm font-semibold text-gray-900">
+            {{ t('setting.appearance') }}
+          </h3>
+          <p class="mt-0.5 text-xs text-gray-500">
+            {{ t('setting.appearanceDesc') }}
+          </p>
         </div>
       </div>
 
@@ -28,8 +32,12 @@
             <TranslateIcon height="1.1em" />
           </div>
           <div>
-            <div class="text-sm font-medium text-gray-900">语言</div>
-            <div class="mt-0.5 text-xs text-gray-500">界面显示语言</div>
+            <div class="text-sm font-medium text-gray-900">
+              {{ t('setting.language') }}
+            </div>
+            <div class="mt-0.5 text-xs text-gray-500">
+              {{ t('setting.languageDesc') }}
+            </div>
           </div>
         </div>
         <SelectRoot v-model="settings.language">
@@ -73,8 +81,12 @@
             <TextSizeIcon height="1.1em" />
           </div>
           <div>
-            <div class="text-sm font-medium text-gray-900">字体大小</div>
-            <div class="mt-0.5 text-xs text-gray-500">聊天内容的文字大小</div>
+            <div class="text-sm font-medium text-gray-900">
+              {{ t('setting.fontSize') }}
+            </div>
+            <div class="mt-0.5 text-xs text-gray-500">
+              {{ t('setting.fontSizeDesc') }}
+            </div>
           </div>
         </div>
         <SelectRoot v-model="settings.fontSize">
@@ -100,7 +112,9 @@
                   <SelectItemIndicator class="absolute left-2.5">
                     <CheckIcon height="1em" />
                   </SelectItemIndicator>
-                  <SelectItemText>{{ option.label }}</SelectItemText>
+                  <SelectItemText>{{
+                    t(`setting.fontSizeOptions.${option.value}`)
+                  }}</SelectItemText>
                 </SelectItem>
               </SelectViewport>
             </SelectContent>
@@ -111,13 +125,14 @@
 
     <div class="mt-5 flex items-center gap-1.5 text-xs text-gray-400">
       <InfoIcon height="1em" />
-      设置会自动保存并实时生效，无需手动确认
+      {{ t('setting.autoSave') }}
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { onMounted, reactive, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import {
   SelectContent,
   SelectItem,
@@ -137,15 +152,17 @@ import PaletteIcon from '@iconify-vue/ep/brush-filled'
 import InfoIcon from '@iconify-vue/ep/info-filled'
 import type { AppFontSize, AppLanguage } from '@/types'
 
+const { t, locale } = useI18n()
+
 const languageOptions: { value: AppLanguage; label: string }[] = [
   { value: 'zh-CN', label: '中文' },
   { value: 'en-US', label: 'English' },
 ]
 
-const fontSizeOptions: { value: AppFontSize; label: string }[] = [
-  { value: 'small', label: '小' },
-  { value: 'medium', label: '中' },
-  { value: 'large', label: '大' },
+const fontSizeOptions: { value: AppFontSize }[] = [
+  { value: 'small' },
+  { value: 'medium' },
+  { value: 'large' },
 ]
 
 const settings = reactive<{ language: AppLanguage; fontSize: AppFontSize }>({
@@ -167,6 +184,14 @@ watch(settings, (value) => {
     window.electronAPI.saveSettings({ ...value })
   }
 })
+
+// 语言切换：同步 i18n locale，全应用文案实时切换
+watch(
+  () => settings.language,
+  (language) => {
+    locale.value = language
+  },
+)
 </script>
 
 <style scoped></style>

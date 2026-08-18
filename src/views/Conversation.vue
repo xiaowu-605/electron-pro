@@ -42,11 +42,20 @@ const conversationStore = useConversation()
 const messageStore = useMessageStore()
 
 // const messages = messagesList
-const filteredMessages = computed(() => messageStore.items)
+// 切换会话瞬间 store 里可能还是旧会话数据，这里必须按当前会话过滤
+const filteredMessages = computed(() =>
+  messageStore.items.filter(
+    (message) => message.conversationId === conversationId.value,
+  ),
+)
+
+// 上下文窗口：只带最近 N 条消息，防止长对话输入 token 滚雪球
+const MAX_CONTEXT_MESSAGES = 20
 
 const sendedMessages = computed(() =>
   filteredMessages.value
     .filter((message) => message.status !== 'loading')
+    .slice(-MAX_CONTEXT_MESSAGES)
     .map((message) => {
       return {
         role: message.type === 'question' ? 'user' : 'assistant',
