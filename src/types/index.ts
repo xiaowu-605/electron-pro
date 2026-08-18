@@ -29,19 +29,33 @@ export interface MessageProps {
   updatedAt: string
 }
 
+export interface ChatMessageProps {
+  role: string
+  content: string
+}
 export interface CreateChatProps {
-  messags: { role: string; content: string }[]
+  messages: ChatMessageProps[]
   providerName: string
   selectedModel: string
   messageId: number
 }
 
+export interface NormalizedStreamChunk {
+  content: string
+  reasoning?: string
+  isEnd: boolean
+  finishReason?: string
+}
+
 export interface UpdatgedStreamData {
   messageId: number
-  data: {
-    is_end: boolean
-    result: string
-  }
+  data: NormalizedStreamChunk
+}
+
+export interface ChatErrorData {
+  messageId: number
+  message: string
 }
 
 export type OnUpdateCallback = (data: UpdatgedStreamData) => void
+export type OnChatErrorCallback = (data: ChatErrorData) => void

@@ -4,7 +4,7 @@ import fs from 'fs/promises'
 import started from 'electron-squirrel-startup'
 import OpenAI from 'openai'
 import dotenv from 'dotenv'
-import { UpdatgedStreamData } from './types'
+import { getProviderAdapter } from './providers'
 dotenv.config()
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
@@ -23,34 +23,28 @@ const createWindow = async () => {
   })
   ipcMain.on('start-chat', async (event, props) => {
     const { messages, providerName, selectedModel, messageId } = props
-    let baseURL =
-      providerName === 'qianfan'
-        ? 'https://qianfan.baidubce.com/v2'
-        : 'https://api.deepseek.com/v1'
-
-    let apiKey =
-      providerName === 'qianfan'
-        ? process.env.OPENAI_API_KEY
-        : process.env.DEEPSEEK_API_KEY
-    const openai = new OpenAI({
-      baseURL,
-      apiKey,
-    })
-    const stream = await openai.chat.completions.create({
-      model: selectedModel,
-      messages,
-      stream: true,
-    })
-    for await (const chunk of stream) {
-      const content = {
-        messageId,
-        data: {
-          is_end: chunk.choices[0]?.finish_reason,
-          result: chunk.choices[0]?.delta?.content ?? '',
-        },
+    try {
+      const adapter = getProviderAdapter(providerName)
+      if (!adapter) {
+        throw new Error(`Unsupported provider: ${providerName}`)
       }
-      // 返回给渲染进程
-      mainWindow.webContents.send('update-message', content)
+      const client = new OpenAI({
+        baseURL: adapter.baseURL,
+        apiKey: adapter.getApiKey(),
+      })
+      const stream = await client.chat.completions.create({
+        model: selectedModel,
+        messages,
+        stream: true,
+      })
+      for await (const chunk of stream) {
+        const data = adapter.normalizeChunk(chunk)
+        mainWindow.webContents.send('update-message', { messageId, data })
+      }
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : String(error)
+      mainWindow.webContents.send('chat-error', { messageId, message })
     }
   })
 

@@ -1,7 +1,12 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { db } from '@/db'
-import { MessageProps, MessageStatus, UpdatgedStreamData } from '@/types'
+import {
+  ChatErrorData,
+  MessageProps,
+  MessageStatus,
+  UpdatgedStreamData,
+} from '@/types'
 
 export const useMessageStore = defineStore('message', () => {
   let items = ref<MessageProps[]>([])
@@ -28,9 +33,27 @@ export const useMessageStore = defineStore('message', () => {
     const currentMessage = items.value.find((item) => item.id === messageId)
     if (currentMessage) {
       const updatedData = {
-        status: data.is_end ? 'finished' : ('streaming' as MessageStatus),
+        status: data.isEnd ? 'finished' : ('streaming' as MessageStatus),
         updatedAt: new Date().toISOString(),
-        ...(!data.is_end && { content: currentMessage.content + data.result }),
+        ...(!data.isEnd && { content: currentMessage.content + data.content }),
+      }
+      await db.messages.update(messageId, updatedData)
+      const index = items.value.findIndex((item) => item.id === messageId)
+      if (index !== -1) {
+        items.value[index] = { ...items.value[index], ...updatedData }
+      }
+    }
+  }
+
+  const failMessage = async (errorData: ChatErrorData) => {
+    const { messageId, message } = errorData
+    const currentMessage = items.value.find((item) => item.id === messageId)
+    if (currentMessage) {
+      const updatedData = {
+        status: 'finished' as MessageStatus,
+        content:
+          currentMessage.content || `请求失败：${message}`,
+        updatedAt: new Date().toISOString(),
       }
       await db.messages.update(messageId, updatedData)
       const index = items.value.findIndex((item) => item.id === messageId)
@@ -45,5 +68,6 @@ export const useMessageStore = defineStore('message', () => {
     createMessage,
     getLastQuestion,
     updateMessage,
+    failMessage,
   }
 })

@@ -21,13 +21,14 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch, onMounted, computed, nextTick } from 'vue'
+import { ref, watch, onMounted, onUnmounted, computed, nextTick } from 'vue'
 import MessageInput from '@/components/MessageInput.vue'
 import MessageList from '@/components/MessageList.vue'
 import {
   MessageProps,
   ConversationProps,
   UpdatgedStreamData,
+  ChatErrorData,
   MessageStatus,
 } from '@/types'
 // import { messagesList, conversationsList } from '@/data/index'
@@ -123,6 +124,13 @@ onMounted(async () => {
     messageStore.updateMessage(steamData)
     await scrollToEnd()
   })
+  window.electronAPI.onChatError(async (errorData: ChatErrorData) => {
+    await messageStore.failMessage(errorData)
+  })
+})
+
+onUnmounted(() => {
+  window.electronAPI.offChatListeners()
 })
 
 async function messageInputChange(question: string) {
