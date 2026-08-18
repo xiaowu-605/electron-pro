@@ -51,7 +51,6 @@ const router = useRouter()
 let conversations = computed(() => conversationStore.items)
 onMounted(async () => {
   await initProviders()
-  console.log('initProviders')
   conversationStore.fetchConversations()
 })
 
