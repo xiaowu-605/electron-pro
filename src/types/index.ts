@@ -59,3 +59,13 @@ export interface ChatErrorData {
 
 export type OnUpdateCallback = (data: UpdatgedStreamData) => void
 export type OnChatErrorCallback = (data: ChatErrorData) => void
+
+export type AppLanguage = 'zh-CN' | 'en-US'
+export type AppFontSize = 'small' | 'medium' | 'large'
+
+export interface AppSettings {
+  language: AppLanguage
+  fontSize: AppFontSize
+}
+
+export type OnSettingsChangedCallback = (settings: AppSettings) => void

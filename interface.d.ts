@@ -1,6 +1,8 @@
 import {
+  AppSettings,
   CreateChatProps,
   OnChatErrorCallback,
+  OnSettingsChangedCallback,
   OnUpdateCallback,
 } from './types'
 export interface IElectronAPI {
@@ -8,6 +10,9 @@ export interface IElectronAPI {
   onUpdateMessage: (callback: OnUpdateCallback) => any
   onChatError: (callback: OnChatErrorCallback) => any
   offChatListeners: () => void
+  getSettings: () => Promise<AppSettings>
+  saveSettings: (settings: AppSettings) => void
+  onSettingsChanged: (callback: OnSettingsChangedCallback) => any
 }
 declare global {
   interface Window {
