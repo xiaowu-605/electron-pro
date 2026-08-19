@@ -29,10 +29,10 @@ export interface MessageProps {
   updatedAt: string
 }
 
-export interface ChatMessageProps {
-  role: string
-  content: string
-}
+export type ChatMessageProps =
+  | { role: 'system'; content: string }
+  | { role: 'user'; content: string }
+  | { role: 'assistant'; content: string }
 export interface CreateChatProps {
   messages: ChatMessageProps[]
   providerName: string

@@ -1,10 +1,8 @@
-import { app, BrowserWindow, ipcMain } from 'electron'
+import { app, BrowserWindow } from 'electron'
 import path from 'node:path'
-import fs from 'fs/promises'
 import started from 'electron-squirrel-startup'
-import OpenAI from 'openai'
 import dotenv from 'dotenv'
-import { getProviderAdapter } from './providers'
+import { registerChatHandlers } from './chat'
 import { loadSettings, registerSettingsHandlers } from './settings'
 dotenv.config()
 
@@ -22,32 +20,6 @@ const createWindow = async () => {
       preload: path.join(__dirname, 'preload.js'),
     },
   })
-  ipcMain.on('start-chat', async (event, props) => {
-    const { messages, providerName, selectedModel, messageId } = props
-    try {
-      const adapter = getProviderAdapter(providerName)
-      if (!adapter) {
-        throw new Error(`Unsupported provider: ${providerName}`)
-      }
-      const client = new OpenAI({
-        baseURL: adapter.baseURL,
-        apiKey: adapter.getApiKey(),
-      })
-      const stream = await client.chat.completions.create({
-        model: selectedModel,
-        messages,
-        stream: true,
-      })
-      for await (const chunk of stream) {
-        const data = adapter.normalizeChunk(chunk)
-        mainWindow.webContents.send('update-message', { messageId, data })
-      }
-    } catch (error) {
-      const message = error instanceof Error ? error.message : String(error)
-      mainWindow.webContents.send('chat-error', { messageId, message })
-    }
-  })
-
   // and load the index.html of the app.
   if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
     mainWindow.loadURL(MAIN_WINDOW_VITE_DEV_SERVER_URL)
@@ -69,6 +41,7 @@ const createWindow = async () => {
 app.whenReady().then(async () => {
   await loadSettings()
   registerSettingsHandlers()
+  registerChatHandlers()
   createWindow()
 })
 
