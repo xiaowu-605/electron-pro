@@ -1,19 +1,35 @@
-import type { ForgeConfig } from '@electron-forge/shared-types';
-import { MakerSquirrel } from '@electron-forge/maker-squirrel';
-import { MakerZIP } from '@electron-forge/maker-zip';
-import { MakerDeb } from '@electron-forge/maker-deb';
-import { MakerRpm } from '@electron-forge/maker-rpm';
-import { VitePlugin } from '@electron-forge/plugin-vite';
-import { FusesPlugin } from '@electron-forge/plugin-fuses';
-import { FuseV1Options, FuseVersion } from '@electron/fuses';
+import type { ForgeConfig } from '@electron-forge/shared-types'
+import { MakerSquirrel } from '@electron-forge/maker-squirrel'
+import { MakerZIP } from '@electron-forge/maker-zip'
+import { MakerDeb } from '@electron-forge/maker-deb'
+import { MakerRpm } from '@electron-forge/maker-rpm'
+import { VitePlugin } from '@electron-forge/plugin-vite'
+import { FusesPlugin } from '@electron-forge/plugin-fuses'
+import { FuseV1Options, FuseVersion } from '@electron/fuses'
 
 const config: ForgeConfig = {
   packagerConfig: {
     asar: true,
+    name: 'VChat',
+    icon: 'assets/icon.ico', // exe 本身图标,不配就是默认 Electron 图标
+    win32metadata: {
+      CompanyName: 'VChat',
+      FileDescription: 'VChat',
+      ProductName: 'VChat',
+      OriginalFilename: 'VChat.exe',
+    },
+    download: {
+      mirrorOptions: {
+        mirror: 'https://npmmirror.com/mirrors/electron/',
+      },
+    },
   },
   rebuildConfig: {},
   makers: [
-    new MakerSquirrel({}),
+    new MakerSquirrel({
+      setupIcon: 'assets/icon.ico',
+      noMsi: false,
+    }),
     new MakerZIP({}, ['darwin']),
     new MakerRpm({}),
     new MakerDeb({}),
@@ -54,6 +70,6 @@ const config: ForgeConfig = {
       [FuseV1Options.OnlyLoadAppFromAsar]: true,
     }),
   ],
-};
+}
 
-export default config;
+export default config

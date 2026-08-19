@@ -43,8 +43,7 @@ const createWindow = async () => {
         mainWindow.webContents.send('update-message', { messageId, data })
       }
     } catch (error) {
-      const message =
-        error instanceof Error ? error.message : String(error)
+      const message = error instanceof Error ? error.message : String(error)
       mainWindow.webContents.send('chat-error', { messageId, message })
     }
   })
@@ -58,8 +57,10 @@ const createWindow = async () => {
     )
   }
 
-  // Open the DevTools.
-  mainWindow.webContents.openDevTools()
+  // Open the DevTools. 开发环境才打开
+  if (!app.isPackaged) {
+    mainWindow.webContents.openDevTools()
+  }
 }
 
 // This method will be called when Electron has finished
