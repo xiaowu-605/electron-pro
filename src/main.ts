@@ -2,6 +2,7 @@ import { app, BrowserWindow } from 'electron'
 import path from 'node:path'
 import started from 'electron-squirrel-startup'
 import dotenv from 'dotenv'
+const { updateElectronApp } = require('update-electron-app')
 import { registerChatHandlers } from './chat'
 import { loadSettings, registerSettingsHandlers } from './settings'
 dotenv.config()
@@ -60,4 +61,10 @@ app.on('activate', () => {
   if (BrowserWindow.getAllWindows().length === 0) {
     createWindow()
   }
+})
+
+// 自动检测更新
+updateElectronApp({
+  repo: 'https://github.com/xiaowu-605/electron-pro', // GitHub 仓库
+  updateInterval: '1 hour', // 检查更新间隔
 })
