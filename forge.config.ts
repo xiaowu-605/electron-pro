@@ -6,6 +6,9 @@ import { MakerRpm } from '@electron-forge/maker-rpm'
 import { VitePlugin } from '@electron-forge/plugin-vite'
 import { FusesPlugin } from '@electron-forge/plugin-fuses'
 import { FuseV1Options, FuseVersion } from '@electron/fuses'
+import { PublisherGithub } from '@electron-forge/publisher-github'
+import dotenv from 'dotenv'
+dotenv.config()
 
 const config: ForgeConfig = {
   packagerConfig: {
@@ -33,6 +36,17 @@ const config: ForgeConfig = {
     new MakerZIP({}, ['darwin']),
     new MakerRpm({}),
     new MakerDeb({}),
+  ],
+  publishers: [
+    new PublisherGithub({
+      repository: {
+        owner: 'xiaowu-605',
+        name: 'electron-pro',
+      },
+      draft: true, // 先建 draft Release,你在网页上确认后才公开
+      prerelease: true, // 标记为 pre-release
+      authToken: process.env.GITHUB_TOKEN,
+    }),
   ],
   plugins: [
     new VitePlugin({
