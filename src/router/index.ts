@@ -1,11 +1,11 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router'
 import { useConversation } from '@/store/conversation'
 import Home from '@/views/Home.vue'
 import Conversation from '@/views/Conversation.vue'
 import Setting from '@/views/Setting.vue'
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHashHistory(),
   routes: [
     { path: '/', component: Home },
     {
